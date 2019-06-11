@@ -74,10 +74,9 @@ function removeDuplicates(array, cb) {
   // Pass the duplicate free array to the callback function.
   // Do not mutate the original array.
 
-  // var for empty output arr
+  // var for empty arr to build up and compare to
   // use filter to iterate
-  // if a spliced version includes the current val,
-    // add that val to the new arr
+  // only return elements not included in the comparison arr
   let arr = []
   let output = array.filter((el, i) => {
     arr.push(el)
