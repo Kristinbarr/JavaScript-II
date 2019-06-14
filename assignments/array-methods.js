@@ -54,30 +54,103 @@ const runners = [{"id":1,"first_name":"Charmain","last_name":"Seiler","email":"c
 {"id":50,"first_name":"Shell","last_name":"Baine","email":"sbaine1d@intel.com","shirt_size":"M","company_name":"Gabtype","donation":171}];
 
 // ==== Challenge 1: Use .forEach() ====
-// The event director needs both the first and last names of each runner for their running bibs.  Combine both the first and last names into a new array called fullName. 
+// The event director needs both the first and last names of each runner for their running bibs.  Combine both the first and last names into a new array called fullName.
+
+// iterate through runners array
+// for every runner, push the first and last name to a new runner obj
+
 let fullName = [];
+runners.forEach(runner => {
+  return fullName.push({first_name: runner.first_name, last_name:runner.last_name})
+})
 console.log(fullName);
+
 
 // ==== Challenge 2: Use .map() ====
 // The event director needs to have all the runner's first names converted to uppercase because the director BECAME DRUNK WITH POWER. Convert each first name into all caps and log the result
-let allCaps = [];
-console.log(allCaps); 
+
+// can't convert to a one-liner because implicit return read object brackets as function brackets
+let allCaps = fullName.map(name => {
+  return { "first_name": name.first_name.toUpperCase(), "last_name": name.last_name}
+})
+console.log(allCaps);
+
 
 // ==== Challenge 3: Use .filter() ====
 // The large shirts won't be available for the event due to an ordering issue.  Get a list of runners with large sized shirts so they can choose a different size. Return an array named largeShirts that contains information about the runners that have a shirt size of L and log the result
-let largeShirts = [];
+
+let largeShirts = runners.filter(runner => runner.shirt_size === 'L')
 console.log(largeShirts);
+
 
 // ==== Challenge 4: Use .reduce() ====
 // The donations need to be tallied up and reported for tax purposes. Add up all the donations into a ticketPriceTotal array and log the result
-let ticketPriceTotal = [];
+
+let ticketPriceTotal = runners.reduce((total, runner) => {
+  return total += runner.donation
+}, 0)
 console.log(ticketPriceTotal);
 
 // ==== Challenge 5: Be Creative ====
 // Now that you have used .forEach(), .map(), .filter(), and .reduce().  I want you to think of potential problems you could solve given the data set and the 5k fun run theme.  Try to create and then solve 3 unique problems using one or many of the array methods listed above.
 
-// Problem 1
+// Problem 1 - We want to give a gift to runners who donated over $100. We need a list of emails for all those people.
 
-// Problem 2
+// use .filter then .forEach or .map
+let largeDonators = runners
+  .filter(runner => runner.donation >= 100)
+  .map(runner => runner.email)
+console.log(largeDonators)
 
-// Problem 3
+
+
+// Problem 2 - The shirt brand makes shirts too big and we need to downsize all the shirt sizes by one size. Update everyone's shirt size.
+
+// use map or forEach and switch statement
+let updatedSize = runners.map(runner => {
+  switch (runner.shirt_size) {
+    case "XS":
+      runner.shirt_size = "XXS"
+      break;
+    case "S":
+      runner.shirt_size = "XS"
+      break;
+    case "M":
+      runner.shirt_size = "S"
+      break;
+    case "L":
+      runner.shirt_size = "M"
+      break;
+    case "XL":
+      runner.shirt_size = "L"
+      break;
+    case "2XL":
+      runner.shirt_size = "XL"
+      break;
+    case "3XL":
+      runner.shirt_size = "2XL"
+      break;
+    default:
+      runner.shirt_size = "L"
+      break;
+  }
+  return runner
+})
+console.log(updatedSize)
+
+// Problem 3 - We need a list of everyone's last name to be printed on the back of the shirt. But oh no! Some last names are too long to fit on the shirt. For names longer than 8 characters, we will use their first name. If their first name is also longer than 8, we will use their company name. If the company name is too long, we will use thier initials.
+
+// use .forEach or .map and if or ternary statement
+let shirtNames = runners.map(runner => {
+  if (runner.last_name.length < 8) {
+    return runner.last_name
+  } else if (runner.first_name < 8) {
+    return runner.first_name
+  } else if (runner.company_name < 8) {
+    return runner.company_name
+  } else {
+    return runner.first_name[0] + runner.last_name[0]
+  }
+})
+console.log(shirtNames)
+
